@@ -28,7 +28,7 @@ we send the paper to AI agent and ask for a Mermaid style visualization in html 
 
 consider PhDagentSpring2026/moodle/task3.1 
 the first round of input, process and output can be found here PhDagentSpring2026/moodle/task3.1/visualizeMacro.md 
-then the output is PhDagentSpring2026/moodle/task3.1/visual.html
+then the output is /home/comp/25481983/code/mccpSpring2026/mccpSpring2026/moodle/task3.1/visualizeMacro.html
 
 we use this output as input and provide some comments here PhDagentSpring2026/moodle/task3.1/commentonVisual.md
 then we get PhDagentSpring2026/moodle/task3.1/visual_interconnection_text.html 

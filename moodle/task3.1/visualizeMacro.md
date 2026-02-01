@@ -1,10 +1,9 @@
-PhDagentSpring2026/literature/KPY*/25480332_Adaptive Parameter Selection for Kernel Ridge Regression.tar.gz
+/home/comp/25481983/code/mccpSpring2026/mccpSpring2026/literature/YW*/2308.04079
 
 
 
-please unzip and read the paper
+please read the paper
 take all the headings and sub-headings
-and generate a visual.html that can be shared via Moodle Forum
-check out this link for more info about html https://elearning.3rdwavemedia.com/blog/how-to-use-simple-html-add-content-moodle-lumo-theme/7401/
+and generate a visual.html.
 
 
