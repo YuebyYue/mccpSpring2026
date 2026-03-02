@@ -1,133 +1,133 @@
 # Writing Feedback — WANG Yue (王越)
 
-WANG Yue (王越) Student ID: 25481983 Email: 25481983@life.hkbu.edu.hk Programme: PHD COMP | Group: week7 GitHub: https://github.com/YuebyYue/mccpSpring2026/tree/main/writing/writingSampleCollection
+## Feedback on WANG Yue's Writing Samples: Introduction and Literature Review
 
---- firstDraft.md ---
-My First Draft
-Source Information
-Date written: November 2024
+**Student:** WANG Yue (王越)
+**Topic:** Guided MRI Reconstruction via Schrödinger Bridge
+**Date:** 2 March 2026
+**Reviewer:** Simon Wang (with AI-assisted analysis)
 
-Context: This draft is based on my research paper titled "Guided MRI Reconstruction via Schrödinger Bridge". It is prepared as a writing sample for academic evaluation and reflects my research manuscript structure.
+**Your samples:** writing/writingSampleCollection/writingSamples.md
+**Your comments:** writing/writingSampleCollection/comments.md
+**Your reflection:** writing/writingSampleCollection/reflection.md
+**Assessment rubric:** writing/assessment/writing_instructions_formatted.md
 
-Status: Partial draft – Introduction and Background sections are fully written; Method, Experiments, and Discussion sections are completed in the research manuscript.
+---
 
+## Overall Assessment
 
-Introduction
-Move 1: Establishing a Territory
-Magnetic Resonance Imaging (MRI) is a widely used medical imaging modality capable of providing detailed anatomical and functional information. However, long acquisition times remain a major limitation for clinical deployment. A common strategy to address this issue is k-space undersampling followed by reconstruction using prior knowledge. Traditional compressed sensing methods rely on handcrafted priors such as sparsity and low-rank constraints, but these approaches often require careful tuning and achieve limited acceleration.
+You are in a unique position among the class: you have real reviewer feedback from an IEEE TMI submission (Reject/Resubmit), which provides concrete, actionable insights into your writing weaknesses. Your writing samples (labeled as Move 2 and Move 3 excerpts) demonstrate solid technical understanding and a clear research direction. However, the samples reveal several issues that align closely with the TMI reviewer comments: (1) the writing assumes too much reader familiarity with advanced concepts like Schrödinger Bridge; (2) the literature positioning is underdeveloped — reviewers noted missing discussion of classical methods and disorganized structure; and (3) the samples tend toward description rather than critical analysis. The good news is that you already have a clear diagnosis from the reviewers; the task now is to systematically address each point.
 
-With the rapid development of deep learning, data-driven MRI reconstruction methods have demonstrated superior performance. Supervised unrolling-based networks and generative models such as diffusion models have significantly improved reconstruction quality while reducing reliance on handcrafted priors.
-Move 2: Identifying a Niche
-Despite recent progress, current diffusion-based reconstruction methods primarily rely on undersampled k-space measurements for guidance. However, MRI is inherently a multi-contrast imaging modality, where different contrasts share strong structural similarities. Existing conditional diffusion models do not fully exploit this structural correspondence between contrasts for guided reconstruction. Furthermore, structural discrepancies between guiding and target contrasts may introduce reconstruction errors due to regression-to-the-mean effects.
+**Estimated current level:** Satisfactory (6–7 range) — The technical foundation is strong and you have genuine research experience, but the writing needs better structure, accessibility, and critical depth.
 
-These limitations highlight the need for a more flexible distribution modeling framework capable of explicitly bridging different image distributions while preserving structural alignment.
-Move 3: Occupying the Niche
-To address these challenges, we propose a novel guided MRI reconstruction framework based on the Schrödinger Bridge (SB). The SB provides a nonlinear diffusion process that establishes a probabilistic bridge between two arbitrary distributions. By constructing a diffusion bridge between guiding and target contrast distributions, structural priors can be effectively transferred during reconstruction.
+---
 
-Moreover, we introduce an inversion strategy to correct structural inconsistencies between guiding and reconstructed images. Experimental results on paired T1 and T2-FLAIR datasets demonstrate that the proposed method achieves high acceleration factors and outperforms existing supervised and diffusion-based approaches in both reconstruction accuracy and stability.
+## Part 1: Introduction Feedback (Based on Your Move 2 Sample)
 
+### What Works Well
 
-Literature Review
-Move 1: Thematic Overview
-MRI reconstruction methods can generally be categorized into traditional model-based approaches and deep learning-based approaches. Traditional methods such as compressed sensing rely on handcrafted priors including sparsity and low-rank constraints. Deep learning approaches include supervised unrolling networks and generative models such as diffusion models.
+- Your Move 2 sample effectively identifies the gap: existing video-pretraining pipelines are costly and can hurt transfer
+- The framing of "cost and potential negative transfer" as dual motivations is compelling
+- You show awareness of the move structure by labeling your samples
 
-Diffusion models, particularly score-based generative models (SGMs), have shown strong performance in inverse problems by learning the data distribution and incorporating data consistency during sampling.
-Move 2: Critical Analysis
-Supervised unrolling networks achieve strong reconstruction accuracy but require large amounts of fully sampled data and often suffer from limited generalization. Diffusion-based approaches alleviate data pairing constraints and provide improved generalization, yet most current methods only use measurement consistency as guidance.
+### Issue 1: The "Context" Provided Is Insufficient
 
-Recent studies have attempted multi-contrast modeling through joint diffusion learning. However, these approaches model joint distributions rather than explicitly constructing transport between distributions, which limits their ability to enforce structural alignment.
+Your Move 2 sample mentions "conventional video-pretraining pipelines" but does not define what these are or why they exist. A reader unfamiliar with video-language models would be lost. This mirrors the TMI reviewer feedback: "Need to rewrite theory/method sections for readers unfamiliar with Schrödinger Bridge."
 
-The Schrödinger Bridge (SB) extends diffusion models by enabling optimal transport between arbitrary distributions. While promising, its computational complexity has historically limited practical application. The recent Image-to-Image Schrödinger Bridge (I²SB) framework makes nonlinear diffusion computationally tractable.
-Move 3: Research Gaps
-Current MRI reconstruction methods lack a principled framework for explicitly bridging guiding and target contrast distributions. Moreover, structural discrepancies between multi-contrast images are often not properly handled, leading to suboptimal performance in guided reconstruction settings.
+**Action:** For each technical concept you introduce, ask: "Would a reader from a neighboring field (e.g., NLP researcher reading about video models) understand this?" If not, add one sentence of explanation before using the term.
 
-There is limited exploration of SB-based guided reconstruction in multi-contrast MRI scenarios.
-Move 4: Conclusion
-The existing literature demonstrates the effectiveness of diffusion models and supervised learning in MRI reconstruction, but it does not fully exploit cross-contrast structural priors within a nonlinear diffusion transport framework. This gap motivates the development of an SB-based guided reconstruction model with an inversion mechanism to enhance structural consistency.
+### Issue 2: Move 2 Does Not Clearly Signal the Gap
 
+Your sample describes the cost problem but does not explicitly frame it as a gap in the literature. Compare:
 
-Notes
-This manuscript reflects my research writing style in a technical and mathematically rigorous domain. One challenge I faced during writing was balancing theoretical explanation with practical algorithmic clarity. Another difficulty was structuring the Introduction to clearly highlight the research gap without overloading it with technical details.
+**Your version:** "Opening/motivation + gap statement (why conventional video-pretraining pipelines are costly and can hurt transfer)"
 
-In drafting this paper, I aimed to follow a structured move-based academic writing approach (territory–niche–occupation) to strengthen logical coherence. My goal is to improve clarity, reduce redundancy, and enhance critical positioning of my work within the existing literature.
+**Stronger Move 2 signal:** "Despite significant progress in video-language models, a fundamental tension remains unresolved: achieving strong temporal understanding requires expensive video pretraining [citations], yet this pretraining often introduces negative transfer when the target domain differs from the pretraining corpus [citations]. No existing approach successfully eliminates the pretraining requirement while maintaining competitive performance."
 
---- reflection.md ---
-My Reflection on Writing
-Writing Challenges and Difficulties
-What aspects of academic writing do you find most challenging?
+The revised version uses explicit gap language ("remains unresolved," "no existing approach") that signals Move 2 to the reader.
 
-The most challenging part of academic writing for me is building a clear and logical structure. I sometimes focus too much on technical details and forget to clearly explain the background and motivation. As a result, my writing can become too dense or hard to follow. Making sure every paragraph has a clear purpose and connects smoothly to the next one is something I am still working on.
+### Issue 3: Connecting Your TMI Experience to This Draft
 
-What specific difficulties do you face when writing Introduction/Literature Review?
+Your TMI reviewers provided specific writing feedback that directly applies to your Introduction:
+- "Missing discussion of classical and modern multi-contrast MRI reconstruction methods"
+- "Insufficient positioning relative to joint reconstruction, Bayesian compressed sensing, GAN-based guidance"
+- "Literature review structure was described as somewhat disorganized"
 
-In the Introduction, I sometimes struggle with clearly identifying and expressing the research gap. I know what my method does, but it is not always easy to explain why the problem truly matters and why existing methods are not enough.
+**Action:** When writing your Introduction for this assignment, ensure Move 1 covers the classical methods first, then transitions to modern deep learning approaches, and then to diffusion/Schrödinger Bridge methods. This chronological-thematic progression is what reviewers expect.
 
-In the Literature Review, I sometimes summarize papers one by one instead of organizing them into clear themes. I also find it challenging to balance completeness and clarity. I want to cover important work in the field, but I also want the section to be structured and focused, not just a long list of references.
+---
 
-What do you struggle with most?
+## Part 2: Literature Review Feedback (Based on Your Move 2 and Move 3 Samples)
 
-I struggle most with explaining complex theories in a simple and intuitive way. Because I understand the method well, I sometimes assume the reader has the same background. This makes my writing less accessible. I need to improve at writing from the reader's perspective.
+### What Works Well
 
+- Your Move 2 Literature Review sample shows genuine synthesis: you group methods into (a) task-specific multimodal models and (b) video large language models — this is exactly the thematic organization expected
+- The final synthesis sentence ("the literature suggests a tension between generality and practicality") is excellent — this is the kind of critical insight that elevates a literature review
+- Your Move 3 sample clearly describes your proposed approach (MTransLLAMA) and how it addresses the identified gaps
 
-My Writing Process
-How do you approach writing Introduction and Literature Review?
+### Issue 4: Strengthen Critical Evaluation Within Each Group
 
-I usually start with an outline instead of writing directly from beginning to end. I first think about the main logic: What is the background? What is missing in current research? How does my work address this gap? Then I organize the section based on this structure.
+Your grouping of methods is good, but the evaluation within each group could be deeper. For example:
 
-What steps do you take?
+**Your sentence:** "task-specific models can be effective, they typically require learning attention-based fusion from scratch and struggle in low-data regimes"
 
-My typical steps are:
+**Deeper analysis:** "Task-specific models such as [Name et al., Year] and [Name et al., Year] achieve strong performance on benchmark datasets (e.g., X% accuracy on [benchmark]) but require dataset-specific attention fusion modules that do not transfer across tasks. In low-data regimes (fewer than N training examples), these models show F1 drops of X–Y% [citation], making them impractical for emerging video understanding tasks where labeled data is scarce."
 
-Read and organize related papers.
-Make a simple outline for each section.
-Write a first draft without worrying too much about language.
-Revise the draft multiple times to improve logic and clarity.
-Edit the language and remove redundant sentences.
+The deeper version adds specific papers, specific numbers, and specific failure conditions.
 
-Do you have a particular method or strategy?
+### Issue 5: Address the TMI Reviewer Feedback on Literature Gaps
 
-My strategy is "structure first, language later." I believe strong structure is more important than perfect wording in the early stage. Once the logic is clear, I improve the language step by step.
+The TMI reviewers specifically noted missing coverage of:
+- Classical multi-contrast MRI reconstruction
+- Joint reconstruction methods
+- Bayesian compressed sensing
+- GAN-based guidance approaches
+- Traditional regularization-based approaches
 
+**Action:** For your revised draft, create a comprehensive literature map that covers these areas systematically. Even if your assignment focuses on your video/MRI approach, demonstrating awareness of the broader methodological landscape is essential.
 
-How I Use AI for Help
-Do you use AI tools (ChatGPT, Claude, etc.) to help with writing?
+### Issue 6: Move 3 Needs Quantitative Contribution Preview
 
-Yes, I use ChatGPT to assist my writing.
+Your Move 3 describes MTransLLAMA's approach qualitatively but doesn't preview specific results or contributions.
 
-How do you use them?
+**Suggestion:** Add numbered contributions: "(1) We propose channel swapping for temporal attention reuse, reducing trainable parameters by X%; (2) We introduce early text-visual fusion in the Q-former, improving [metric] by X points; (3) We demonstrate competitive performance on [benchmarks] without any video pretraining."
 
-I mainly use AI for checking grammar, improving clarity, and reorganizing sentences. I also use it for brainstorming and checking whether my motivation or explanation is clear.
+---
 
-What prompts do you typically use?
+## Part 3: Language and Process Feedback
 
-Some examples of prompts I use are:
+### Issue 7: Your "Structure First, Language Later" Strategy Is Sound
 
-"Please rewrite this paragraph to make the logic clearer."
-"Is the research motivation clear here?"
-"Help me remove redundant expressions."
-"Can you simplify this explanation?"
+Your reflection describes a "structure first, language later" approach — this is a good strategy. However, make sure "structure" includes the rhetorical moves, not just the section headings. A well-structured draft has clear Move 1 → Move 2 → Move 3 progression in the Introduction and Move 1 → Move 2 → Move 3 → Move 4 in the Literature Review.
 
-What do you find helpful or not helpful about AI assistance?
+### Issue 8: Leverage Your TMI Review Experience
 
-AI is helpful for improving clarity and finding awkward expressions. However, it cannot replace my own understanding of the research problem. I always review and modify AI-generated text before using it. I see AI as a tool for editing and support, not for generating core ideas.
+You have a rare advantage: real reviewer feedback on real writing. Most students in the class do not have this. Use it systematically:
+- Create a checklist from the reviewer comments
+- Check each point against your new draft
+- Address each point explicitly in your revision
 
+Your reflection wisely notes: "clarity is as important as innovation." This is a lesson many researchers learn too late.
 
-My Goals
-What do you hope to improve in your writing?
+---
 
-I want to improve my ability to clearly define research gaps and explain why my work matters. I also want to make my writing more concise and easier to follow.
+## Summary of Priority Actions
 
-What specific skills do you want to develop?
+| Priority | Action | Impact |
+|----------|--------|--------|
+| 🔴 High | Write a full Introduction with clearly separated Moves 1, 2, 3 | Addresses structural weakness |
+| 🔴 High | Cover classical methods before modern methods in Move 1 | Addresses TMI reviewer concern |
+| 🔴 High | Add explicit gap language in Move 2 | Makes research motivation clear |
+| 🟡 Medium | Deepen critical analysis with specific numbers and comparisons | Elevates literature review quality |
+| 🟡 Medium | Add numbered contribution preview in Move 3 | Signals clear research value |
+| 🟡 Medium | Address each TMI reviewer point systematically | Demonstrates growth and revision skill |
+| 🟢 Lower | Ensure accessibility — explain advanced concepts for non-specialist readers | Improves readability |
 
-Stronger logical flow between paragraphs.
-Better synthesis of multiple sources in the Literature Review.
-Clearer and simpler explanation of complex methods.
-More critical analysis instead of simple summary.
-Better balance between technical depth and readability.
+---
 
+## Next Steps
 
-Additional Notes
-Through recent submission experience, I realized that clarity is as important as innovation. Even if the method is technically strong, unclear writing can weaken its impact. I now see writing as an important part of research training, not just a final step of reporting results.
-
-
-
+1. Read the [full writing instructions](https://github.com/tesolchina/mccpSpring2026/blob/main/writing/assessment/writing_instructions_formatted.md)
+2. Write a complete Introduction and Literature Review (1000–1500 words) for your MRI/video research
+3. Use the TMI reviewer feedback as a revision checklist
+4. Submit by **15 March 2026** via Moodle forum and Turnitin
