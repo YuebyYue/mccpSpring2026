@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Gaussian Splatting - 8-Minute Presentation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/black.css">
+    <link rel="stylesheet" href="css/custom-styles.css">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section>
+                <h1>From Photos to 3D Walkthroughs</h1>
+                <p class="subtitle">Making Interactive Virtual Worlds Real</p>
+                <div class="hero-split">
+                    <div class="photo-stack fragment">
+                        <div class="photo-card">Photo 1</div>
+                        <div class="photo-card">Photo 2</div>
+                        <div class="photo-card">Photo 3</div>
+                    </div>
+                    <div class="arrow fragment">➜</div>
+                    <div class="render-card fragment">
+                        <div class="render-title">Interactive 3D Scene</div>
+                        <div class="render-grid"></div>
+                    </div>
+                </div>
+                <p class="hint fragment">How do we get both realism and speed?</p>
+                <aside class="notes">Hook first. Keep this visual and quick.</aside>
+            </section>
+
+            <section>
+                <h2>Two Impossible Choices</h2>
+                <div class="two-col">
+                    <div class="choice bad fragment">
+                        <h3>Beautiful But Slow</h3>
+                        <ul>
+                            <li>High quality ★★★★★</li>
+                            <li>48 hours training</li>
+                            <li>0.071 fps</li>
+                        </ul>
+                    </div>
+                    <div class="choice bad fragment">
+                        <h3>Fast But Ugly</h3>
+                        <ul>
+                            <li>Lower quality ★★★</li>
+                            <li>6-7 minutes training</li>
+                            <li>8-9 fps</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="big-question fragment">Can we have BOTH high quality and real-time?</p>
+                <aside class="notes">Emphasize dilemma. Keep energy and contrast.</aside>
+            </section>
+
+            <section>
+                <h2>The Gap: Need ≥ 30 fps + High Quality</h2>
+                <div class="gap-chart">
+                    <div class="axis-x">Speed: slow ➜ fast</div>
+                    <div class="axis-y">Quality: low ➜ high</div>
+                    <div class="dot d1 fragment">Mip-NeRF360</div>
+                    <div class="dot d2 fragment">InstantNGP</div>
+                    <div class="dot d3 fragment">Plenoxels</div>
+                    <div class="target fragment">?</div>
+                </div>
+                <p class="hint fragment">Missing spot: high quality AND real-time.</p>
+            </section>
+
+            <section>
+                <h2>Idea 1: Represent with Blobs</h2>
+                <p class="subtitle">Thousands of soft 3D ellipsoids ("fuzzy blobs")</p>
+                <div class="blob-scene">
+                    <span class="blob b1 fragment"></span>
+                    <span class="blob b2 fragment"></span>
+                    <span class="blob b3 fragment"></span>
+                    <span class="blob b4 fragment"></span>
+                    <span class="blob b5 fragment"></span>
+                    <span class="blob b6 fragment"></span>
+                    <span class="blob b7 fragment"></span>
+                </div>
+                <p class="callout fragment">Simple geometry = fast processing</p>
+            </section>
+
+            <section>
+                <h2>Idea 2: Auto-Adjust Detail</h2>
+                <div class="timeline3">
+                    <div class="step fragment">
+                        <h4>Start</h4>
+                        <div class="mini-sparse"></div>
+                    </div>
+                    <div class="step fragment">
+                        <h4>During Training</h4>
+                        <div class="mini-mid"></div>
+                    </div>
+                    <div class="step fragment">
+                        <h4>Optimized</h4>
+                        <div class="mini-dense"></div>
+                    </div>
+                </div>
+                <p class="callout accent-orange fragment">51 minutes vs 48 hours → 56× faster</p>
+            </section>
+
+            <section>
+                <h2>Idea 3: Render FAST</h2>
+                <div class="bars">
+                    <div class="bar-row fragment">
+                        <span>InstantNGP</span>
+                        <div class="bar" style="width: 9%;"></div>
+                        <strong>9.2 fps</strong>
+                    </div>
+                    <div class="bar-row fragment">
+                        <span>Plenoxels</span>
+                        <div class="bar" style="width: 8%;"></div>
+                        <strong>8.2 fps</strong>
+                    </div>
+                    <div class="bar-row fragment threshold">
+                        <span>Real-time threshold</span>
+                        <div class="bar threshold-bar" style="width: 30%;"></div>
+                        <strong>30 fps</strong>
+                    </div>
+                    <div class="bar-row fragment winner">
+                        <span>This method</span>
+                        <div class="bar winner-bar" style="width: 100%;"></div>
+                        <strong>135 fps 🏆</strong>
+                    </div>
+                </div>
+                <p class="big-number fragment">~15× faster than previous fast baselines</p>
+            </section>
+
+            <section>
+                <h2>Still Looks Amazing</h2>
+                <div class="image-compare">
+                    <figure class="img-card fragment">
+                        <div class="img-placeholder gt"></div>
+                        <figcaption>Ground Truth</figcaption>
+                    </figure>
+                    <figure class="img-card fragment">
+                        <div class="img-placeholder ours"></div>
+                        <figcaption>This Method</figcaption>
+                    </figure>
+                    <figure class="img-card fragment">
+                        <div class="img-placeholder prev"></div>
+                        <figcaption>Previous Method</figcaption>
+                    </figure>
+                </div>
+                <p class="hint fragment">High quality + real-time speed</p>
+            </section>
+
+            <section>
+                <h2>What This Enables</h2>
+                <div class="grid-2x2">
+                    <div class="grid-box fragment">
+                        <div class="icon">🥽</div>
+                        <p>Photorealistic VR</p>
+                    </div>
+                    <div class="grid-box fragment">
+                        <div class="icon">🎮</div>
+                        <p>Real-world in games</p>
+                    </div>
+                    <div class="grid-box fragment">
+                        <div class="icon">🏢</div>
+                        <p>Instant walkthroughs</p>
+                    </div>
+                    <div class="grid-box fragment">
+                        <div class="icon">🎬</div>
+                        <p>Virtual film sets</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>My Takeaway</h2>
+                <div class="two-col takeaways">
+                    <div class="choice fragment">
+                        <h3>Research Lesson</h3>
+                        <p>Simplicity &gt; Complexity</p>
+                        <p>Solve the problem, not the trend.</p>
+                    </div>
+                    <div class="choice fragment">
+                        <h3>Writing Lesson</h3>
+                        <p>Numbers &gt; Vagueness</p>
+                        <p>"135 fps" beats "very fast".</p>
+                    </div>
+                </div>
+                <p class="thanks fragment">Thank You! Questions?</p>
+                <p class="footer-numbers fragment">135 fps · 51 min vs 48 hrs · 56× faster</p>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- 编辑模式切换按钮 -->
+    <div id="editToggle" style="position: fixed; top: 20px; right: 20px; z-index: 1000; 
+                                 background: var(--orange, #ff8c42); color: white; 
+                                 padding: 12px 20px; border-radius: 8px; cursor: pointer; 
+                                 font-family: 'Montserrat', sans-serif; font-weight: 600; 
+                                 box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s;">
+        🔒 演示模式
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+            transition: 'fade',
+            transitionSpeed: 'fast',
+            width: 1920,
+            height: 1080,
+            margin: 0.08,
+            slideNumber: 'c/t'
+        });
+
+        // 编辑模式功能
+        let isEditMode = false;
+        const editToggle = document.getElementById('editToggle');
+        const editableSelectors = 'h1, h2, h3, h4, p, li, figcaption, .subtitle, .hint, .callout, .big-question, .big-number, .thanks, .footer-numbers, .photo-card, .render-title, .choice h3, .choice p';
+
+        // 从localStorage加载保存的内容
+        function loadSavedContent() {
+            const saved = localStorage.getItem('presentation_edits');
+            if (saved) {
+                try {
+                    const edits = JSON.parse(saved);
+                    edits.forEach(edit => {
+                        const element = document.querySelector(edit.selector);
+                        if (element) element.innerHTML = edit.content;
+                    });
+                    console.log('✓ 已加载保存的编辑内容');
+                } catch (e) {
+                    console.error('加载编辑内容失败:', e);
+                }
+            }
+        }
+
+        // 保存所有可编辑内容到localStorage
+        function saveContent() {
+            const elements = document.querySelectorAll('[contenteditable="true"]');
+            const edits = [];
+            elements.forEach((el, index) => {
+                edits.push({
+                    selector: `[data-edit-id="${el.getAttribute('data-edit-id')}"]`,
+                    content: el.innerHTML
+                });
+            });
+            localStorage.setItem('presentation_edits', JSON.stringify(edits));
+            console.log('✓ 已保存编辑内容到浏览器');
+        }
+
+        // 切换编辑模式
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const elements = document.querySelectorAll(editableSelectors);
+
+            if (isEditMode) {
+                editToggle.innerHTML = '✏️ 编辑模式';
+                editToggle.style.background = '#10b981';
+                elements.forEach((el, index) => {
+                    el.setAttribute('contenteditable', 'true');
+                    el.setAttribute('data-edit-id', `edit-${index}`);
+                    el.style.outline = '1px dashed rgba(16, 185, 129, 0.4)';
+                    el.style.outlineOffset = '4px';
+                    el.style.cursor = 'text';
+                });
+                // 添加保存提示
+                const hint = document.createElement('div');
+                hint.id = 'editHint';
+                hint.style.cssText = 'position: fixed; top: 70px; right: 20px; z-index: 1000; background: rgba(16, 185, 129, 0.9); color: white; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-family: sans-serif;';
+                hint.innerHTML = '💡 点击文本编辑，自动保存';
+                document.body.appendChild(hint);
+            } else {
+                editToggle.innerHTML = '🔒 演示模式';
+                editToggle.style.background = '#ff8c42';
+                elements.forEach(el => {
+                    el.removeAttribute('contenteditable');
+                    el.style.outline = 'none';
+                    el.style.cursor = 'default';
+                });
+                saveContent();
+                const hint = document.getElementById('editHint');
+                if (hint) hint.remove();
+            }
+        }
+
+        // 监听编辑事件，实时保存
+        document.addEventListener('input', (e) => {
+            if (isEditMode && e.target.hasAttribute('contenteditable')) {
+                clearTimeout(window.saveTimeout);
+                window.saveTimeout = setTimeout(() => {
+                    saveContent();
+                }, 1000); // 1秒后自动保存
+            }
+        });
+
+        // 绑定切换按钮
+        editToggle.addEventListener('click', toggleEditMode);
+
+        // 页面加载时恢复保存的内容
+        window.addEventListener('load', () => {
+            setTimeout(loadSavedContent, 500);
+        });
+
+        // 添加导出功能（Ctrl+E）
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'e') {
+                e.preventDefault();
+                const html = document.documentElement.outerHTML;
+                const blob = new Blob([html], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'presentation_edited_' + new Date().getTime() + '.html';
+                a.click();
+                console.log('✓ 已导出编辑后的HTML文件');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Gaussian Splatting — 8-Minute Presentation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/black.css">
+    <link rel="stylesheet" href="css/custom-styles.css">
+</head>
+
+<body>
+
+    <!-- ====== 幻灯片概览导航栏 ====== -->
+    <nav id="slideNav">
+        <div class="nav-header">
+            <span class="nav-logo">📊</span>
+            <span class="nav-title">Slide Overview</span>
+            <button id="navClose" title="关闭">✕</button>
+        </div>
+        <ul id="navList">
+            <li data-slide="0" class="active"><span class="nav-num">1</span><span class="nav-label">Hook &amp;
+                    Motivation</span></li>
+            <li data-slide="1"><span class="nav-num">2</span><span class="nav-label">The Problem</span></li>
+            <li data-slide="2"><span class="nav-num">3</span><span class="nav-label">Existing Methods &amp; Gap</span>
+            </li>
+            <li data-slide="3"><span class="nav-num">4</span><span class="nav-label">Idea 1 — Fuzzy Blobs</span></li>
+            <li data-slide="4"><span class="nav-num">5</span><span class="nav-label">Idea 2 — Auto-Adjust</span></li>
+            <li data-slide="5"><span class="nav-num">6</span><span class="nav-label">Idea 3 — Render FAST</span></li>
+            <li data-slide="6"><span class="nav-num">7</span><span class="nav-label">Visual Quality</span></li>
+            <li data-slide="7"><span class="nav-num">8</span><span class="nav-label">Applications</span></li>
+            <li data-slide="8"><span class="nav-num">9</span><span class="nav-label">Takeaway &amp; Q&amp;A</span></li>
+        </ul>
+        <div class="nav-footer">
+            <span id="navProgress">1 / 9</span>
+        </div>
+    </nav>
+
+    <!-- ====== 工具栏 ====== -->
+    <div id="toolbar">
+        <button id="navToggle" title="显示概览 (M)">☰ Overview</button>
+        <button id="editToggle" title="编辑模式 (E)">🔒 Present</button>
+    </div>
+
+    <!-- ====== Reveal.js 幻灯片 ====== -->
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ===== SLIDE 1: Hook & Motivation ===== -->
+            <section data-timing="60">
+                <div class="slide-badge">1 / 9</div>
+                <h1 class="glow-text">From Photos to 3D Walkthroughs</h1>
+                <p class="subtitle">Making Interactive Virtual Worlds Real</p>
+
+                <div class="hero-split">
+                    <div class="photo-stack fragment fade-right">
+                        <div class="photo-card"><span class="photo-icon">📷</span> Photo 1</div>
+                        <div class="photo-card"><span class="photo-icon">📷</span> Photo 2</div>
+                        <div class="photo-card"><span class="photo-icon">📷</span> Photo 3</div>
+                    </div>
+                    <div class="transform-arrow fragment zoom-in">
+                        <div class="arrow-pulse">➜</div>
+                    </div>
+                    <div class="render-card fragment fade-left">
+                        <div class="render-label">Interactive 3D Scene</div>
+                        <div class="render-preview">
+                            <div class="render-glow"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="question-hook fragment fade-up">How do we get both <em>realism</em> and <em>speed</em>?</p>
+                <aside class="notes">Hook: magic mirror metaphor. 60 seconds.</aside>
+            </section>
+
+            <!-- ===== SLIDE 2: The Problem ===== -->
+            <section data-timing="60">
+                <div class="slide-badge">2 / 9</div>
+                <h2>Two Impossible Choices</h2>
+
+                <div class="versus-layout">
+                    <div class="vs-card bad fragment fade-right">
+                        <div class="vs-icon">🐢</div>
+                        <h3>Beautiful But Slow</h3>
+                        <ul>
+                            <li>Quality ★★★★★</li>
+                            <li><strong>48 hours</strong> training</li>
+                            <li><strong>0.071 fps</strong> — unusable</li>
+                        </ul>
+                        <div class="vs-verdict">✗</div>
+                    </div>
+                    <div class="vs-divider fragment zoom-in"><span>VS</span></div>
+                    <div class="vs-card bad fragment fade-left">
+                        <div class="vs-icon">💨</div>
+                        <h3>Fast But Ugly</h3>
+                        <ul>
+                            <li>Quality ★★★☆☆</li>
+                            <li><strong>6-7 min</strong> training</li>
+                            <li><strong>8-9 fps</strong> — jerky</li>
+                        </ul>
+                        <div class="vs-verdict">✗</div>
+                    </div>
+                </div>
+
+                <p class="big-question fragment fade-up">Can we have <span class="hl-orange">BOTH</span> — high quality
+                    <em>and</em> real-time?</p>
+                <aside class="notes">Emphasize dilemma. 60 seconds.</aside>
+            </section>
+
+            <!-- ===== SLIDE 3: The Gap ===== -->
+            <section data-timing="30">
+                <div class="slide-badge">3 / 9</div>
+                <h2>The Gap</h2>
+                <p class="subtitle">Need ≥ 30 fps + High Quality</p>
+
+                <div class="scatter-chart">
+                    <div class="chart-area">
+                        <div class="chart-ylabel">Quality ↑</div>
+                        <div class="chart-xlabel">Speed →</div>
+                        <div class="chart-dot dot-slow fragment" data-fragment-index="1">
+                            <span class="dot-circle"></span>
+                            <span class="dot-label">Mip-NeRF360<br><small>quality, very slow</small></span>
+                        </div>
+                        <div class="chart-dot dot-mid1 fragment" data-fragment-index="2">
+                            <span class="dot-circle"></span>
+                            <span class="dot-label">InstantNGP</span>
+                        </div>
+                        <div class="chart-dot dot-mid2 fragment" data-fragment-index="2">
+                            <span class="dot-circle"></span>
+                            <span class="dot-label">Plenoxels</span>
+                        </div>
+                        <div class="chart-target fragment" data-fragment-index="3">
+                            <span class="target-ring"></span>
+                            <span class="target-label">?</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="hint fragment">A missing piece: high quality <strong>AND</strong> real-time.</p>
+                <aside class="notes">Brief — 30 seconds. "There's a gap."</aside>
+            </section>
+
+            <!-- ===== SLIDE 4: Core Idea 1 — Blobs ===== -->
+            <section data-timing="50">
+                <div class="slide-badge">4 / 9</div>
+                <h2>Idea 1 — Represent with <span class="hl-cyan">Blobs</span></h2>
+                <p class="subtitle">Thousands of soft, fuzzy 3D ellipsoids</p>
+
+                <div class="blob-scene">
+                    <span class="blob b1 fragment fade-in" data-fragment-index="1"></span>
+                    <span class="blob b2 fragment fade-in" data-fragment-index="1"></span>
+                    <span class="blob b3 fragment fade-in" data-fragment-index="2"></span>
+                    <span class="blob b4 fragment fade-in" data-fragment-index="2"></span>
+                    <span class="blob b5 fragment fade-in" data-fragment-index="3"></span>
+                    <span class="blob b6 fragment fade-in" data-fragment-index="3"></span>
+                    <span class="blob b7 fragment fade-in" data-fragment-index="3"></span>
+                    <span class="blob b8 fragment fade-in" data-fragment-index="3"></span>
+                    <span class="blob b9 fragment fade-in" data-fragment-index="3"></span>
+                </div>
+
+                <div class="idea-chips fragment fade-up">
+                    <div class="chip">🧩 Simple geometry</div>
+                    <div class="chip accent">⚡ = Fast processing</div>
+                    <div class="chip">📦 1–5 million blobs / scene</div>
+                </div>
+                <aside class="notes">"Imagine fuzzy blobs scattered in 3D space." 50 seconds.</aside>
+            </section>
+
+            <!-- ===== SLIDE 5: Core Idea 2 — Auto-Adjust ===== -->
+            <section data-timing="40">
+                <div class="slide-badge">5 / 9</div>
+                <h2>Idea 2 — <span class="hl-cyan">Auto-Adjust</span> Detail</h2>
+
+                <div class="timeline-strip">
+                    <div class="tl-step fragment fade-right" data-fragment-index="1">
+                        <div class="tl-badge gray">Start</div>
+                        <div class="density-vis sparse"></div>
+                        <p class="tl-caption">Few blobs</p>
+                    </div>
+                    <div class="tl-arrow fragment" data-fragment-index="1">→</div>
+                    <div class="tl-step fragment fade-up" data-fragment-index="2">
+                        <div class="tl-badge yellow">Training</div>
+                        <div class="density-vis mid"></div>
+                        <p class="tl-caption">Adding detail</p>
+                    </div>
+                    <div class="tl-arrow fragment" data-fragment-index="2">→</div>
+                    <div class="tl-step fragment fade-left" data-fragment-index="3">
+                        <div class="tl-badge green">Optimized</div>
+                        <div class="density-vis dense"></div>
+                        <p class="tl-caption">Final result</p>
+                    </div>
+                </div>
+
+                <div class="stat-banner fragment fade-up">
+                    <div class="stat-item">
+                        <span class="stat-num orange">51 min</span>
+                        <span class="stat-desc">training time</span>
+                    </div>
+                    <div class="stat-vs">vs</div>
+                    <div class="stat-item">
+                        <span class="stat-num muted">48 hours</span>
+                        <span class="stat-desc">previous best</span>
+                    </div>
+                    <div class="stat-result">
+                        <span class="stat-num green">56×</span>
+                        <span class="stat-desc">faster!</span>
+                    </div>
+                </div>
+                <aside class="notes">"Adds blobs where needed, removes waste." 40 seconds.</aside>
+            </section>
+
+            <!-- ===== SLIDE 6: Core Idea 3 — Render FAST ===== -->
+            <section data-timing="60">
+                <div class="slide-badge">6 / 9</div>
+                <h2>Idea 3 — Render <span class="hl-orange">FAST</span></h2>
+
+                <div class="fps-chart">
+                    <div class="fps-row fragment" data-fragment-index="1">
+                        <span class="fps-label">InstantNGP</span>
+                        <div class="fps-track">
+                            <div class="fps-bar" style="--pct:6.8%"></div>
+                        </div>
+                        <span class="fps-value">9.2 fps</span>
+                    </div>
+                    <div class="fps-row fragment" data-fragment-index="1">
+                        <span class="fps-label">Plenoxels</span>
+                        <div class="fps-track">
+                            <div class="fps-bar" style="--pct:6.1%"></div>
+                        </div>
+                        <span class="fps-value">8.2 fps</span>
+                    </div>
+                    <div class="fps-row threshold fragment" data-fragment-index="2">
+                        <span class="fps-label">Real-time line</span>
+                        <div class="fps-track">
+                            <div class="fps-bar thr" style="--pct:22.2%"></div>
+                        </div>
+                        <span class="fps-value muted">30 fps</span>
+                    </div>
+                    <div class="fps-row winner fragment" data-fragment-index="3">
+                        <span class="fps-label">This Method</span>
+                        <div class="fps-track">
+                            <div class="fps-bar win" style="--pct:100%"></div>
+                        </div>
+                        <span class="fps-value big orange">135 fps 🏆</span>
+                    </div>
+                </div>
+
+                <p class="big-reveal fragment fade-up" data-fragment-index="3">
+                    <span class="hl-green">~15× faster</span> — smooth, real-time interaction!
+                </p>
+                <aside class="notes">THE BIG REVEAL. Dramatic pause before 135 fps. 60 seconds.</aside>
+            </section>
+
+            <!-- ===== SLIDE 7: Visual Quality ===== -->
+            <section data-timing="45">
+                <div class="slide-badge">7 / 9</div>
+                <h2>Still Looks <span class="hl-cyan">Amazing</span></h2>
+
+                <div class="comparison-grid">
+                    <figure class="comp-card fragment fade-up" data-fragment-index="1">
+                        <div class="comp-image gt-img"><span class="comp-tag">Reference</span></div>
+                        <figcaption>Ground Truth</figcaption>
+                    </figure>
+                    <figure class="comp-card fragment fade-up" data-fragment-index="2">
+                        <div class="comp-image ours-img"><span class="comp-tag star">★ Ours</span></div>
+                        <figcaption>This Method</figcaption>
+                    </figure>
+                    <figure class="comp-card fragment fade-up" data-fragment-index="3">
+                        <div class="comp-image prev-img"><span class="comp-tag">Baseline</span></div>
+                        <figcaption>Previous Method</figcaption>
+                    </figure>
+                </div>
+
+                <p class="hint fragment">High quality + real-time speed — no compromise.</p>
+                <aside class="notes">Let images speak. 45 seconds.</aside>
+            </section>
+
+            <!-- ===== SLIDE 8: Applications ===== -->
+            <section data-timing="50">
+                <div class="slide-badge">8 / 9</div>
+                <h2>What This <span class="hl-cyan">Enables</span></h2>
+
+                <div class="app-grid">
+                    <div class="app-card fragment fade-up" data-fragment-index="1">
+                        <div class="app-icon">🥽</div>
+                        <h3>VR</h3>
+                        <p>Photorealistic virtual reality</p>
+                    </div>
+                    <div class="app-card fragment fade-up" data-fragment-index="2">
+                        <div class="app-icon">🎮</div>
+                        <h3>Gaming</h3>
+                        <p>Real-world scenes in games</p>
+                    </div>
+                    <div class="app-card fragment fade-up" data-fragment-index="3">
+                        <div class="app-icon">🏢</div>
+                        <h3>Architecture</h3>
+                        <p>Instant walkthroughs</p>
+                    </div>
+                    <div class="app-card fragment fade-up" data-fragment-index="4">
+                        <div class="app-icon">🎬</div>
+                        <h3>Film</h3>
+                        <p>Virtual production sets</p>
+                    </div>
+                </div>
+                <aside class="notes">Friendly, relatable. 50 seconds.</aside>
+            </section>
+
+            <!-- ===== SLIDE 9: Takeaway & Q&A ===== -->
+            <section data-timing="60">
+                <div class="slide-badge">9 / 9</div>
+                <h2>My Takeaway</h2>
+
+                <div class="takeaway-row">
+                    <div class="takeaway-card fragment fade-right">
+                        <div class="takeaway-icon">🔬</div>
+                        <h3>Research Lesson</h3>
+                        <p><strong>Simplicity &gt; Complexity</strong></p>
+                        <p class="sub">Solve the problem, not the trend.</p>
+                    </div>
+                    <div class="takeaway-card fragment fade-left">
+                        <div class="takeaway-icon">✍️</div>
+                        <h3>Writing Lesson</h3>
+                        <p><strong>Numbers &gt; Vagueness</strong></p>
+                        <p class="sub">"135 fps" beats "very fast".</p>
+                    </div>
+                </div>
+
+                <div class="closing fragment fade-up">
+                    <h2 class="thank-you">Thank You!</h2>
+                    <p class="qa">Questions?</p>
+                    <div class="key-numbers">
+                        <span class="kn"><span class="kn-val">135</span> fps</span>
+                        <span class="kn-sep">·</span>
+                        <span class="kn"><span class="kn-val">51</span> min vs 48 hrs</span>
+                        <span class="kn-sep">·</span>
+                        <span class="kn"><span class="kn-val">56×</span> faster</span>
+                    </div>
+                </div>
+                <aside class="notes">Genuine, personal. Pause for questions. 60 seconds.</aside>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- ====== Scripts ====== -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+    <script>
+        /* ===== Reveal Init ===== */
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+            overview: true,
+            transition: 'fade',
+            transitionSpeed: 'fast',
+            width: 1920,
+            height: 1080,
+            margin: 0.06,
+            slideNumber: 'c/t',
+            keyboard: true
+        });
+
+        /* ===== 侧栏导航 ===== */
+        const nav = document.getElementById('slideNav');
+        const navBtn = document.getElementById('navToggle');
+        const navClose = document.getElementById('navClose');
+        const navList = document.getElementById('navList');
+        const navProg = document.getElementById('navProgress');
+        let navOpen = false;
+
+        function setNav(open) {
+            navOpen = open;
+            nav.classList.toggle('open', open);
+        }
+        navBtn.addEventListener('click', () => setNav(!navOpen));
+        navClose.addEventListener('click', () => setNav(false));
+
+        navList.querySelectorAll('li').forEach(li => {
+            li.addEventListener('click', () => {
+                Reveal.slide(+li.dataset.slide);
+                setNav(false);
+            });
+        });
+
+        Reveal.on('slidechanged', ev => {
+            const idx = ev.indexh;
+            navList.querySelectorAll('li').forEach((li, i) => li.classList.toggle('active', i === idx));
+            navProg.textContent = `${idx + 1} / 9`;
+        });
+
+        /* ===== 编辑模式 ===== */
+        let isEdit = false;
+        const editBtn = document.getElementById('editToggle');
+        const SEL = '.slides h1,.slides h2,.slides h3,.slides p,.slides li,.slides figcaption,.slides .sub';
+
+        function toggleEdit() {
+            isEdit = !isEdit;
+            document.querySelectorAll(SEL).forEach((el, i) => {
+                el.contentEditable = isEdit ? 'true' : 'false';
+                el.dataset.editId = 'e' + i;
+                el.classList.toggle('editable-outline', isEdit);
+            });
+            editBtn.innerHTML = isEdit ? '✏️ Editing' : '🔒 Present';
+            editBtn.classList.toggle('editing', isEdit);
+            if (!isEdit) saveEdits();
+            toast(isEdit ? '编辑模式开启 — 点击文本编辑' : '已保存，切换到演示模式');
+        }
+        editBtn.addEventListener('click', toggleEdit);
+
+        document.addEventListener('input', e => {
+            if (isEdit && e.target.isContentEditable) {
+                clearTimeout(window._st);
+                window._st = setTimeout(saveEdits, 800);
+            }
+        });
+
+        function saveEdits() {
+            const d = {};
+            document.querySelectorAll('[data-edit-id]').forEach(el => d[el.dataset.editId] = el.innerHTML);
+            localStorage.setItem('gs_edits', JSON.stringify(d));
+        }
+        function loadEdits() {
+            try {
+                const d = JSON.parse(localStorage.getItem('gs_edits'));
+                if (!d) return;
+                document.querySelectorAll(SEL).forEach((el, i) => { if (d['e' + i]) el.innerHTML = d['e' + i]; });
+            } catch (_) { }
+        }
+        window.addEventListener('load', () => setTimeout(loadEdits, 300));
+
+        /* ===== 快捷键 ===== */
+        document.addEventListener('keydown', e => {
+            if ((e.key === 'm' || e.key === 'M') && !isEdit) setNav(!navOpen);
+            if ((e.key === 'e' || e.key === 'E') && !e.ctrlKey && !document.activeElement.isContentEditable) toggleEdit();
+            if (e.ctrlKey && e.key === 'e') {
+                e.preventDefault();
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([document.documentElement.outerHTML], { type: 'text/html' }));
+                a.download = `presentation_${Date.now()}.html`;
+                a.click();
+                toast('已导出 HTML');
+            }
+            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+                localStorage.removeItem('gs_edits');
+                toast('编辑重置');
+                location.reload();
+            }
+        });
+
+        /* ===== Toast ===== */
+        function toast(msg) {
+            let t = document.getElementById('toast');
+            if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+            t.textContent = msg;
+            t.className = 'show';
+            clearTimeout(window._tt);
+            window._tt = setTimeout(() => t.className = '', 2500);
+        }
+    </script>
+</body>
+
+</html>
