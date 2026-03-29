@@ -1,81 +1,140 @@
 # Sample poster process and requirement alignment
 
-This document describes how the sample poster was produced and how it aligns with pre2 instructions and institutional guidelines.
+This document explains how the sample poster materials were generated from the paper source in `literature/YW*/2308.04079/GaussianSplattingVisualization.html` and how the resulting poster structure aligns with the `pre2` assessment instructions and the HKBU Department of Mathematics poster guidelines.
 
 ---
 
 ## 1. Source and scope
 
-- **Paper:** AStar-BMao — *Accelerating Graph Similarity Search via Efficient GED Computation* (Lijun Chang, Xing Feng, Kai Yao, Lu Qin, Wenjie Zhang; IEEE-style, ~15 pages).
-- **Source file:** `mccpSpring2026/literature/JJG*/AStarBMaoVisualization.html` (macro-level structure and content).
-- **Instructions used:** `mccpSpring2026/pre2` materials: MCCP6020 Assessment (poster presentation) and HKBU Department of Mathematics poster guidelines (`pre2/demo/institutionalGuidelines/math.md`).
+- **Paper topic:** *3D Gaussian Splatting for Real-Time Radiance Field Rendering*.
+- **Paper source used for this sample workflow:** `literature/YW*/2308.04079/GaussianSplattingVisualization.html`.
+- **Important constraint:** all content extraction for this sample process should be based on the Gaussian Splatting visualization file above, not on any other paper or earlier sample.
+- **Instructions used:** materials in `pre2/`, especially the poster task description and `pre2/demo/institutionalGuidelines/math.md`.
 
 ---
 
 ## 2. Process followed
 
-1. **Extract content from the paper**
-   - Read the visualization HTML to identify: problem (graph similarity search, GED), baseline (AStar-LSa, lbLSa), contributions (lbBMa ideal, lbBMao practical), and main result (faster + less memory).
+1. **Read the source visualization**
+   - Use `literature/YW*/2308.04079/GaussianSplattingVisualization.html` as the single paper-content source.
+   - Extract the macro-level organization already identified in the visualization:
+     - Introduction
+     - Related Work
+     - Method
+     - Experiments
+     - Discussion and Conclusion
 
-2. **Map to required sections**
-   - Introduction → problem, gap, two-stage contribution.
-   - Methodology → baseline, lbBMa, lbBMao (with complexity and tightness).
-   - Results → empirical findings (speed, memory, scalability).
-   - Discussion/Conclusion → summary and impact.
-   - References → paper and baseline.
-   - Layman’s summary → short non-technical overview (as per HKBU guidelines).
+2. **Identify the paper's core message**
+   - Problem: existing radiance field methods achieve strong visual quality, but real-time rendering for full scenes at 1080p remains difficult.
+   - Gap: prior methods face a speed-quality trade-off and do not achieve the target real-time display rate for unbounded scenes.
+   - Main solution: the paper combines three technical elements:
+     - 3D Gaussian scene representation
+     - interleaved optimization with density control
+     - fast differentiable rendering using tile-based rasterization
+   - Main outcome: state-of-the-art visual quality with competitive training time and real-time rendering performance.
 
-3. **Apply layout and design rules**
-   - Header: title (centred), presenter and principal supervisor placeholders, logo placeholder (top left), department (top right).
-   - Typography: sans-serif for title and section headings; serif for body and layman’s summary.
-   - Structure: single-column flow with clear section headings; placeholder boxes for “graphs/tables” to meet text–visual balance intent.
-   - Dimensions: HTML/CSS set for A0 portrait proportions (841×1189 px) so the layout can be exported to PDF at 600 dpi for submission if required.
+3. **Map paper content to poster sections**
+   - **Introduction**: explain novel-view synthesis, why the problem matters, and the specific rendering-speed gap.
+   - **Methodology**: summarize the three technical elements from the paper source:
+     - 3D Gaussian representation
+     - optimization and adaptive density control
+     - fast differentiable rendering
+   - **Results**: highlight evaluation dimensions named in the source:
+     - PSNR
+     - SSIM
+     - training time
+     - rendering FPS
+     - benchmark datasets and baselines
+   - **Discussion / Conclusion**: restate contributions, limitations, applications, and future directions.
+   - **References**: include the paper itself and any baseline systems explicitly mentioned in the poster.
+   - **Layman's summary**: add a short non-technical explanation for readers outside graphics / vision.
 
-4. **Deliverables**
-   - `samplePoster.html`: single-file poster; replace placeholders (name, supervisor, logos, and insert real figures/tables) for actual use.
-   - `sampleProcess.md`: this process and alignment.
-   - `outlineScript.md`: presentation outline and 2–3 minute script.
+4. **Adapt the paper to the poster format**
+   - Reduce long method explanations into short bullets and figure placeholders.
+   - Preserve the paper's problem-solution-results logic so the poster can be scanned quickly.
+   - Keep quantitative claims visible, especially real-time rendering, 1080p, training efficiency, and evaluation metrics.
+   - Reserve visual areas for diagrams, pipeline summaries, and benchmark plots because the guidelines expect a balanced text-visual layout.
 
----
+5. **Apply layout and guideline constraints**
+   - Use a portrait poster structure with a strong header, section blocks, and a layman's summary near the top.
+   - Keep section names close to the academic structure in the source while simplifying them for poster readability.
+   - Use sans-serif headings and serif body text to match the departmental guidance.
+   - Prepare the HTML so it can later be exported to print-ready PDF or preview PNG.
 
-## 3. How the poster aligns with requirements
-
-### MCCP6020 (Assessment 2 – Poster presentation)
-
-| Requirement | Alignment |
-|-------------|-----------|
-| Summarize research topic, objectives, methodologies, findings, conclusions | Poster has Introduction (topic + objectives), Methodology (baseline + lbBMa + lbBMao), Results (findings), Discussion/Conclusion. |
-| A1 or A3 size (A4 not acceptable) | HTML layout uses A0 portrait proportions; can be printed at A1 or A3 by scaling or by exporting at the required size. |
-| Clear headings, bullet points, visuals | Section headings (h2), bullet lists in Methodology and References; placeholder boxes for graphs/tables to keep ~50–60% text / 40–50% visuals when figures are added. |
-| Readable font size | Title and headings set large; body text 18px (scale up for print so body is ≥24 pt / ≥30 pt from 1.8 m per HKBU). |
-
-### HKBU Department of Mathematics guidelines
-
-| Requirement | Alignment |
-|-------------|-----------|
-| A0, 841×1189 mm, portrait | CSS width/height on `.poster` match A0 portrait; export to PDF at 600 dpi for submission. |
-| Logo: HKBU (top left); Department (top right) | Header grid: left = logo placeholder, centre = title block, right = “Department of Mathematics”. |
-| Header: title, presenter, principal supervisor (centred) | Centred block with poster title and “Presenter: [Name] · Principal Supervisor: [Name]”. |
-| Sections: Introduction, Methodology, Results, Discussion/Conclusion, References | All five sections present in that order. |
-| Layman’s summary | First content block after header; non-technical one-paragraph overview. |
-| Titles/headings: sans-serif, ≥100 pt (on final PDF) | Headings use Arial/Helvetica; in this HTML they are 28–42px — **when exporting to PDF, increase font sizes so that the main title is ≥100 pt and section headings are clearly dominant** (e.g. via print stylesheet or design tool). |
-| Body: serif, ≥24 pt (≥30 pt recommended) | Body uses Times New Roman; 18px in HTML — **scale up for final PDF** so body is ≥24 pt (or ≥30 pt) when measured in the PDF. |
-| Text 50–60%, visuals 40–50% | Layout reserves space for figures/tables (placeholder boxes); adding real graphs/tables will achieve the balance. |
-| Graphs/tables minimum 216×280 mm | Placeholder boxes mark where to insert figures; final PDF should use images at or above this size. |
-| Accessibility and comprehensibility for non-specialists | Layman’s summary and short, clear section text support this; avoid jargon in the summary. |
-
-### Gaps / next steps for a real submission
-
-- Replace `[HKBU logo]`, `[Your Name]`, `[Supervisor Name]` with real content.
-- Insert actual figures and tables (running time, memory, scalability) in place of the placeholder boxes; ensure minimum graph/table size 216×280 mm in the final PDF.
-- When generating the submission PDF: use print CSS or a headless browser (e.g. Puppeteer) to export at A0 and 600 dpi; verify title ≥100 pt and body ≥24 pt (or ≥30 pt) in the PDF.
-- If the unit requires A1 rather than A0, scale the layout or adjust page size at export.
+6. **Deliverables produced in `pre2/sample`**
+   - `samplePoster.html`: the sample poster draft in HTML.
+   - `sampleProcess.md`: this workflow and alignment note.
+   - `outlineScript.md`: a short presentation outline and speaking script.
 
 ---
 
-## 4. References
+## 3. How the sample aligns with requirements
 
-- `createPoster.md` — task specification (sample poster from AStar-BMao, pre2 instructions, sample folder).
-- `pre2/demo/institutionalGuidelines/math.md` — HKBU Math poster guidelines.
-- `pre2/materials/pre2AssessmentRubrics.md` — MCCP6020 poster presentation instructions.
-- `literature/JJG*/AStarBMaoVisualization.html` — paper structure and content source.
+### MCCP6020 poster presentation requirements
+
+| Requirement | Alignment |
+|-------------|-----------|
+| Summarize topic, objectives, methodology, findings, and conclusions | The sample workflow maps the Gaussian Splatting source into Introduction, Methodology, Results, and Discussion / Conclusion. |
+| Poster format instead of full paper | Long paper sections are condensed into poster-friendly bullets, short paragraphs, and figure placeholders. |
+| Clear organization and readable presentation | The poster uses distinct sections, concise statements, and a top-down reading flow. |
+| Appropriate use of visuals | The workflow explicitly reserves space for method diagrams, benchmark plots, and result comparisons. |
+
+### HKBU Department of Mathematics poster guidelines
+
+| Requirement | Alignment |
+|-------------|-----------|
+| Portrait academic poster with formal header | The sample poster format uses a top header with title, presenter, supervisor, and department placement. |
+| Required core sections | The workflow includes Introduction, Methodology, Results, Discussion / Conclusion, and References. |
+| Layman's summary for non-specialists | The sample includes a separate plain-language summary near the top. |
+| Large, readable headings and body text | The HTML poster is structured so font sizes can be scaled for final PDF export and printing. |
+| Balance between text and visuals | The workflow avoids turning the poster into a text wall and expects figure/table areas to carry a substantial part of the explanation. |
+| Accessibility and comprehensibility | The source paper is highly technical, so the workflow deliberately simplifies the message around problem, method, and impact. |
+
+---
+
+## 4. Content decisions taken from the Gaussian Splatting source
+
+The following details come from `literature/YW*/2308.04079/GaussianSplattingVisualization.html` and should drive the poster content:
+
+- **Introduction content**
+  - Radiance field methods are important for novel-view synthesis.
+  - The concrete niche is real-time rendering for unbounded or complete scenes at 1080p.
+  - The poster should keep the quantitative gap visible instead of describing the problem only in general terms.
+
+- **Methodology content**
+  - The poster should present the method as three coordinated components, because the source explicitly frames the contribution that way.
+  - Those components are:
+    - 3D Gaussian representation
+    - optimization with adaptive density control
+    - fast differentiable rendering
+
+- **Results content**
+  - The sample should use the evaluation categories named in the source:
+    - image quality metrics such as PSNR and SSIM
+    - rendering speed in FPS
+    - training time
+    - benchmark datasets such as NeRF synthetic, Mip-NeRF360, Tanks and Temples, and Deep Blending
+    - comparisons with baselines such as Mip-NeRF360, InstantNGP, and Plenoxels
+
+- **Discussion content**
+  - The closing section should mention impact, limitations, and future work.
+  - The source highlights representation size, memory requirements, real-time applications, and directions such as dynamic scenes or interactive editing.
+
+---
+
+## 5. Gaps and next steps for a polished submission
+
+- Ensure `samplePoster.html` is also updated so its topic and technical details match the Gaussian Splatting paper source consistently.
+- Replace all placeholders with actual presenter, supervisor, logo, and department details.
+- Insert real figures or recreated diagrams based on the Gaussian Splatting source instead of generic placeholders.
+- Check the final exported PDF against the required page size, font size, and visual balance rules before submission.
+- If students revise the poster with an AI agent, keep `sampleProcess.md` updated so the documented workflow still matches the actual poster content.
+
+---
+
+## 6. References
+
+- `literature/YW*/2308.04079/GaussianSplattingVisualization.html` — the paper-content source used for this sample process.
+- `pre2/createPoster.md` — task description for generating the sample poster materials.
+- `pre2/demo/institutionalGuidelines/math.md` — HKBU Mathematics poster guideline reference.
+- `pre2/materials/pre2AssessmentRubrics.md` — poster presentation assessment guidance, if used in the local course materials.

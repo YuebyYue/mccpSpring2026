@@ -325,6 +325,30 @@
             display: block;
         }
 
+        .figure-card {
+            margin: 1.2rem 0 0;
+            padding: 0.9rem;
+            background-color: var(--color-bg-alt);
+            border: 2px solid var(--color-accent-light);
+            border-radius: 8px;
+        }
+
+        .figure-card img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            max-height: 28vh;
+            object-fit: contain;
+            margin: 0 auto;
+        }
+
+        .figure-caption {
+            font-size: clamp(0.9rem, 1.1vw, 1rem);
+            line-height: 1.45;
+            color: #5b6470;
+            margin: 0.75rem 0 0;
+        }
+
         @media (max-width: 768px) {
             .comparison-grid {
                 grid-template-columns: 1fr;
@@ -422,6 +446,11 @@
                 </ul>
             </div>
 
+            <div class="figure-card">
+                <img src="./assets/pipeline.png" alt="3D Gaussian Splatting pipeline overview">
+                <p class="figure-caption">3D Gaussian Splatting overall pipeline: initialize Gaussians from SfM points, render through projection and differentiable rasterization, and refine scene structure with adaptive density control.</p>
+            </div>
+
             <div class="transition-cue">→ But representation is only half the story. The system also learns <em>where</em> to place them...</div>
             <div class="slide-number">4 / 9</div>
             <div class="timer-panel" onclick="toggleTimer(this)">⏱️ <span class="timer-value">1:00</span></div>
@@ -440,6 +469,11 @@
                     <li>Matches the highest-quality method... in just <strong>51 minutes</strong></li>
                     <li>Previous best: 48 hours → <span class="big-number" style="font-size: 1.8rem;">56× faster</span></li>
                 </ul>
+            </div>
+
+            <div class="figure-card">
+                <img src="./assets/table.png" alt="Quantitative comparison table across datasets">
+                <p class="figure-caption">Quantitative comparison across multiple datasets: Gaussian Splatting achieves a stronger balance between image quality and rendering efficiency than prior methods.</p>
             </div>
 
             <div class="transition-cue">→ Speed in training is great, but speed in <em>rendering</em> is where the real breakthrough happens...</div>
@@ -470,6 +504,11 @@
             </div>
 
             <p style="text-align: center; margin-top: 1.5rem;"><strong>✓ Smooth real-time interaction  |  ✓ High visual quality</strong></p>
+
+            <div class="figure-card">
+                <img src="./assets/results.png" alt="Visual comparison results of different rendering methods">
+                <p class="figure-caption">Visual comparison results: Gaussian Splatting preserves scene details while significantly increasing rendering speed.</p>
+            </div>
 
             <div class="transition-cue">→ This combination enables real-world applications. Let me show you what becomes possible...</div>
             <div class="slide-number">6 / 9</div>

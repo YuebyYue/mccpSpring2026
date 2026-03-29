@@ -1,69 +1,71 @@
-# Outline and script for poster presentation (2–3 minutes)
+# Outline and script for poster presentation (2-3 minutes)
 
-Use this outline and script to prepare the oral presentation that accompanies the sample poster. Aim for **2–3 minutes**, then take questions.
+Use this outline and script with the Gaussian Splatting sample poster. The content is based on `literature/YW*/2308.04079/GaussianSplattingVisualization.html` and should stay consistent with `sampleProcess.md`.
 
 ---
 
 ## Presentation outline
 
-1. **Opening (15–20 s)**  
-   Hook + title + one-sentence takeaway.
+1. **Opening (15-20 s)**
+   - Introduce the topic and the one-line takeaway.
 
-2. **Problem and gap (25–30 s)**  
-   What is graph similarity search / GED; why current method (AStar-LSa) is limited (memory/scalability).
+2. **Problem and gap (25-30 s)**
+   - Explain novel-view synthesis and why real-time 1080p rendering is difficult for full scenes.
 
-3. **What we did (40–50 s)**  
-   Two-stage idea: tighter bound lbBMa → efficient variant lbBMao; main guarantee (faster + less memory).
+3. **Method (40-50 s)**
+   - Present the three-part solution:
+     - 3D Gaussian scene representation
+     - optimization with density control
+     - fast differentiable rendering
 
-4. **Result in one line (15–20 s)**  
-   Experiments: AStar-BMao runs faster and uses much less memory than AStar-LSa on real data.
+4. **Results (25-30 s)**
+   - Summarize the evaluation dimensions and the main outcome: high quality with real-time performance.
 
-5. **Closing (10–15 s)**  
-   So what / impact + thank you / invite questions.
+5. **Closing (10-15 s)**
+   - State the impact and invite questions.
 
 ---
 
-## Script (approx. 2 min 30 s)
+## Script (about 2 min 30 s)
 
 **Opening**  
-“Hi. I’m going to walk you through our work on **accelerating graph similarity search**. In one sentence: we make it **faster and much more memory-efficient** than the current best method, so it can scale to larger graphs.”
+"Hello. This poster is about **3D Gaussian Splatting for Real-Time Radiance Field Rendering**. The main takeaway is that the paper achieves both **high visual quality** and **real-time 1080p rendering**, which is a major goal in novel-view synthesis."
 
 **Problem and gap**  
-“In many applications we have a database of graphs—networks—and we want to find graphs that are *similar* to a query. Similarity is measured by the *graph edit distance*, or GED: the minimum number of edits to turn one graph into the other. The state-of-the-art exact method is **AStar-LSa**. The problem is that its **memory use grows very quickly** when graphs or the similarity threshold get larger, so it doesn’t scale well.”
+"Radiance field methods are very effective for generating new views of a scene from many input images. However, a common problem is the trade-off between quality and speed. Existing methods may look good, but for large or unbounded scenes they are often too slow for real-time display. The paper identifies this as a concrete gap: current approaches do not achieve real-time rendering at 1080p for full scenes."
 
-**What we did**  
-“We propose a **two-stage** approach. First we design a **tighter lower bound**, lbBMa, based on branch matching instead of label sets—so the search space is smaller, but the cost is high, order n to the four. So we introduce a **second, practical** bound, **lbBMao**, that relaxes lbBMa just enough to bring the cost down to order n cubed, while still being tighter than the old bound. The resulting algorithm is **AStar-BMao**.”
+**Method**  
+"The solution is built from three connected ideas. First, the scene is represented using **3D Gaussians**, initialized from Structure-from-Motion points. Second, the method uses **interleaved optimization and density control** so the representation becomes more accurate during training. Third, it uses **fast differentiable rendering** with tile-based rasterization and visibility-aware splatting, which makes the rendering pipeline efficient on the GPU."
 
-**Result**  
-“On real datasets, **AStar-BMao runs faster and uses much less memory** than AStar-LSa. So we get both speed and scalability.”
+**Results**  
+"The method is evaluated on datasets such as **NeRF synthetic, Mip-NeRF360, Tanks and Temples, and Deep Blending**. The paper reports image-quality metrics like **PSNR and SSIM**, along with **training time** and **rendering FPS**. The overall result is that Gaussian Splatting delivers strong visual quality while also reaching real-time rendering performance."
 
 **Closing**  
-“So we’ve made graph similarity search more practical for larger data. I’m happy to take questions—about the problem, the bounds, or the experiments. Thank you.”
+"So the contribution of this work is not only a new representation, but a complete pipeline that makes high-quality scene rendering practical in real time. This is important for applications such as VR, AR, and interactive 3D scene capture. Thank you, and I welcome questions."
 
 ---
 
-## Possible Q&A — short answers
+## Possible Q&A
 
-- **What is GED?**  
-  The minimum number of edit operations (add/delete/relabel node or edge) to transform one graph into the other.
+- **What is novel-view synthesis?**  
+  It means generating new camera views of a scene from a set of existing images.
 
-- **Why “two stages”?**  
-  The first bound (lbBMa) is ideal for tightness but too expensive; the second (lbBMao) keeps most of the benefit with feasible complexity.
+- **Why use Gaussians?**  
+  They provide a flexible scene representation that works well with efficient splatting-based rendering.
 
-- **Compared to machine learning methods?**  
-  This work is about *exact* GED computation; the paper shows orders-of-magnitude gains over the previous exact method (AStar-LSa). Comparison to approximate/ML methods is in the paper.
+- **What makes this method fast?**  
+  The rendering stage is designed for GPU efficiency through tile-based rasterization and visibility-aware processing.
 
-- **What datasets?**  
-  Real graph datasets; see the paper for names and sizes. The poster placeholders are where you’d put time/memory plots.
+- **What are the main evaluation metrics?**  
+  PSNR, SSIM, training time, and rendering FPS.
 
-- **For a non-specialist:**  
-  “We help search big networks more efficiently: we found a way to use less memory and less time than the previous best method, so it works on larger networks.”
+- **What are the limitations?**  
+  The paper still notes issues such as representation size, memory requirements, and the need for extensions to more complex dynamic scenes.
 
 ---
 
 ## Timing checklist
 
-- [ ] Rehearse with a timer; stay within 2–3 minutes.
-- [ ] Point at the poster (title, layman’s summary, methodology diagram, results placeholders) while speaking.
-- [ ] Prepare 2–3 backup slides or notes for “if they ask about X” (e.g. GED definition, complexity, datasets).
-- [ ] Practise one sentence each for: problem, gap, contribution, result, impact.
+- [ ] Keep the talk within 2-3 minutes.
+- [ ] Point to the layman's summary, methodology section, and result placeholders while speaking.
+- [ ] Prepare one short answer about datasets, one about the three-part method, and one about practical applications.
