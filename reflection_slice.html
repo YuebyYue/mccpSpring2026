@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reflection Slice - Teaching Reflection Slides</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@600;700;800&display=swap');
+
+:root {
+  --color-primary: #1B4942;
+  --color-text: #1A1A2E;
+  --color-bg: #FFFFFF;
+  --color-bg-alt: #F8FAF4;
+  --color-accent-light: #E8F0ED;
+  --color-soft: #D7E7E2;
+  --color-warm: #D97A54;
+  --color-gold: #E9C46A;
+  --color-border: #D7DDD8;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: #000;
+  overflow: hidden;
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5vh 10vw;
+  background:
+    radial-gradient(circle at top right, rgba(233, 196, 106, 0.14), transparent 26%),
+    linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.slide.active {
+  display: flex;
+  opacity: 1;
+}
+
+.title-slide,
+.closing-slide {
+  align-items: center;
+  text-align: center;
+}
+
+.slide-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+  max-width: 14ch;
+}
+
+.title-slide .slide-title {
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  max-width: 16ch;
+}
+
+.slide-subtitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  font-weight: 600;
+  color: rgba(27, 73, 66, 0.82);
+  margin-bottom: 1rem;
+}
+
+.slide-body,
+.bullet-list li,
+.note-card,
+.action-card,
+.compare-card,
+.quote-box,
+.term-card {
+  font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+  line-height: 1.65;
+}
+
+.meta-line {
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  color: #7B807A;
+  margin-top: 0.8rem;
+}
+
+.title-bar {
+  width: 84px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  margin: 1rem 0 1.2rem;
+}
+
+.rubric-tag {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-right: 0.45rem;
+  vertical-align: middle;
+}
+
+.rubric-tag.content { background: #2A9D8F; }
+.rubric-tag.visual { background: #264653; }
+.rubric-tag.delivery { background: var(--color-warm); }
+
+.chips {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+
+.chip {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.7rem 1.2rem;
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin: 1rem 0;
+}
+
+.compare-card,
+.note-card,
+.action-card,
+.term-card,
+.quote-box {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 1.2rem 1.35rem;
+  box-shadow: 0 10px 28px rgba(17, 24, 39, 0.06);
+}
+
+.compare-card {
+  min-height: 100%;
+}
+
+.compare-card h3,
+.note-card h3,
+.action-card h3,
+.term-card h3 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 1.7vw, 1.55rem);
+  color: var(--color-primary);
+  margin-bottom: 0.55rem;
+}
+
+.compare-card.before {
+  border-top: 5px solid #9DAAA2;
+}
+
+.compare-card.after {
+  border-top: 5px solid var(--color-primary);
+}
+
+.bullet-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+}
+
+.bullet-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.bullet-list li::before {
+  content: '';
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  transform: translateY(-50%);
+}
+
+.quote-box {
+  margin-top: 1rem;
+  background: var(--color-accent-light);
+  border-left: 6px solid var(--color-primary);
+}
+
+.quote-box strong {
+  color: var(--color-primary);
+}
+
+.alignment-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+.term-card {
+  text-align: center;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F4F8F6 100%);
+}
+
+.term-card .term {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+  color: var(--color-primary);
+  margin-bottom: 0.4rem;
+}
+
+.term-card p {
+  font-size: clamp(1rem, 1.25vw, 1.1rem);
+  color: #495057;
+  line-height: 1.5;
+}
+
+.term-card.align-good {
+  border-top: 5px solid #2A9D8F;
+}
+
+.three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.95rem;
+  margin: 1rem 0 0.8rem;
+}
+
+.action-card {
+  border-top: 5px solid var(--color-primary);
+}
+
+.action-card p {
+  font-size: clamp(1rem, 1.2vw, 1.08rem);
+  color: #4A4F59;
+  line-height: 1.55;
+}
+
+.big-takeaway {
+  font-family: var(--font-heading);
+  font-size: clamp(1.55rem, 2.5vw, 2.1rem);
+  line-height: 1.45;
+  color: var(--color-primary);
+  max-width: 42ch;
+  margin-top: 1rem;
+}
+
+.transition-cue {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #E7ECE7;
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  color: var(--color-primary);
+  font-style: italic;
+  font-weight: 600;
+}
+
+.transition-cue::before {
+  content: '\2192  ';
+}
+
+.slide-number {
+  position: absolute;
+  bottom: 1.2rem;
+  right: 2rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #C5CCC7;
+}
+
+.progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: var(--color-primary);
+  width: 0;
+  z-index: 120;
+  transition: width 0.3s ease;
+}
+
+.toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 42px;
+  background: rgba(27, 73, 66, 0.96);
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  gap: 0.5rem;
+  transform: translateY(-100%);
+  transition: transform 0.25s ease;
+  z-index: 200;
+}
+
+.toolbar.visible {
+  transform: translateY(0);
+}
+
+.toolbar button {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.toolbar button:hover,
+.toolbar button.active {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.toolbar .toolbar-label,
+.toolbar .slide-info {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.82rem;
+}
+
+.toolbar .toolbar-label {
+  margin-left: auto;
+}
+
+.save-indicator {
+  position: fixed;
+  top: 54px;
+  right: 20px;
+  background: #2A9D8F;
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 300;
+  pointer-events: none;
+}
+
+.save-indicator.show {
+  opacity: 1;
+}
+
+body.edit-mode [contenteditable="true"]:focus {
+  outline: 2px dashed var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+body.edit-mode [contenteditable="true"]:hover {
+  outline: 1px dashed #B9C3BD;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.notes-panel {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: min(980px, 86vw);
+  background: rgba(21, 27, 30, 0.94);
+  color: #F6F7F8;
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+  z-index: 180;
+  display: none;
+}
+
+body.show-notes .notes-panel {
+  display: block;
+}
+
+.notes-panel .notes-title {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  color: #BBD7CF;
+  margin-bottom: 0.45rem;
+}
+
+.notes-panel .notes-content {
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  line-height: 1.55;
+  color: #F1F4F5;
+}
+
+.speaker-note {
+  display: none;
+}
+
+@media (max-width: 920px) {
+  .two-col,
+  .alignment-strip,
+  .three-col {
+    grid-template-columns: 1fr;
+  }
+
+  .slide {
+    padding: 6vh 8vw;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar" id="toolbar">
+  <button id="editBtn" onclick="toggleEditMode()">Edit Mode</button>
+  <button id="notesBtn" onclick="toggleNotes()">Notes</button>
+  <button onclick="saveToCache()">Save to Cache</button>
+  <button onclick="loadFromCache()">Load from Cache</button>
+  <button onclick="downloadHTML()">Download HTML</button>
+  <button onclick="clearCache()">Clear Cache</button>
+  <span class="toolbar-label">E edit | N notes | T toolbar</span>
+  <span class="slide-info" id="slideInfo"></span>
+</div>
+<div class="save-indicator" id="saveIndicator">Saved</div>
+
+<div class="slide title-slide active" id="slide1">
+  <span class="slide-number">1</span>
+  <div class="slide-title" contenteditable="false">From Delivering Content to Designing Learning</div>
+  <div class="title-bar"></div>
+  <div class="slide-subtitle" contenteditable="false">A short reflection on how this course changed my view of teaching</div>
+  <div class="chips">
+    <div class="chip" contenteditable="false">Outcome focus</div>
+    <div class="chip" contenteditable="false">Constructive alignment</div>
+    <div class="chip" contenteditable="false">Meaningful interaction</div>
+  </div>
+  <p class="meta-line" contenteditable="false">4 slides | about 2.5 minutes | English reflection slice</p>
+  <div class="speaker-note">
+    In this short reflection, I want to explain one major change in my thinking about teaching. Before this course, I mostly judged teaching by whether content was clearly delivered and whether the task was completed. Now I see teaching more as the design of learning: starting from outcomes, aligning activities and assessment, and making interaction support real thinking.
+  </div>
+</div>
+
+<div class="slide" id="slide2">
+  <span class="slide-number">2</span>
+  <div class="slide-title" contenteditable="false">My Main Shift: From Content Delivery to Learning Outcomes</div>
+  <p class="slide-body" contenteditable="false">
+    <span class="rubric-tag content">REFLECTION</span>
+    <span class="rubric-tag visual">OBTL</span>
+    This course introduced me to <strong>Outcomes-Based Teaching and Learning</strong>. It pushed me to ask not only what I teach, but what students can actually do by the end.
+  </p>
+  <div class="two-col">
+    <div class="compare-card before" contenteditable="false">
+      <h3>Before</h3>
+      <ul class="bullet-list">
+        <li>I focused on whether the explanation was clear.</li>
+        <li>I cared about whether the procedure looked complete.</li>
+        <li>I often equated finishing the task with successful teaching.</li>
+      </ul>
+    </div>
+    <div class="compare-card after" contenteditable="false">
+      <h3>Now</h3>
+      <ul class="bullet-list">
+        <li>I start with the intended learning outcomes, or ILOs.</li>
+        <li>I ask whether the design supports understanding, not just delivery.</li>
+        <li>I see teaching as a process of enabling learning, not displaying content.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="quote-box" contenteditable="false">
+    <strong>Key realization:</strong> Completing a teaching task does not automatically mean that learning has happened.
+  </div>
+  <div class="transition-cue" contenteditable="false">That shift also made me notice a weakness in my own design habits.</div>
+  <div class="speaker-note">
+    The biggest change for me came from OBTL. Before the course, I paid more attention to content delivery. I wanted the explanation to be smooth, the structure to be complete, and the task to be finished. After learning about OBTL, I began to focus on intended learning outcomes. The important question is no longer only what I present, but what students are able to understand, apply, or reflect on after the lesson.
+  </div>
+</div>
+
+<div class="slide" id="slide3">
+  <span class="slide-number">3</span>
+  <div class="slide-title" contenteditable="false">What I Noticed: Execution Mindset and Misalignment</div>
+  <p class="slide-body" contenteditable="false">
+    <span class="rubric-tag content">ALIGNMENT</span>
+    <span class="rubric-tag delivery">SELF-CRITIQUE</span>
+    In practice, I often worked from the content outward. I concentrated on progress and presentation, but reflected less on whether the design truly served the learning goal.
+  </p>
+  <div class="alignment-strip">
+    <div class="term-card align-good" contenteditable="false">
+      <div class="term">ILOs</div>
+      <h3>Outcomes</h3>
+      <p>What learners should know or be able to do.</p>
+    </div>
+    <div class="term-card align-good" contenteditable="false">
+      <div class="term">TLAs</div>
+      <h3>Activities</h3>
+      <p>What learners do in order to reach those outcomes.</p>
+    </div>
+    <div class="term-card align-good" contenteditable="false">
+      <div class="term">AMs</div>
+      <h3>Assessment</h3>
+      <p>How learning is checked and made visible.</p>
+    </div>
+  </div>
+  <div class="note-card" contenteditable="false">
+    <h3>My problem</h3>
+    I was usually planning from <strong>content presentation</strong>, not from the alignment among <strong>ILOs, TLAs, and AMs</strong>. That meant some classroom choices looked organized, but were not fully connected to the learning outcome.
+  </div>
+  <div class="transition-cue" contenteditable="false">A clear example of this was how I originally understood classroom interaction.</div>
+  <div class="speaker-note">
+    This new perspective also helped me recognize a problem in my own approach. I tend to be execution-driven. I think about how to move the task forward, how to meet the requirement, and how to present the content. But I do not always stop and ask whether my activities and assessment are aligned with the intended learning outcome. In other words, I can produce a well-organized task without achieving constructive alignment.
+  </div>
+</div>
+
+<div class="slide closing-slide" id="slide4">
+  <span class="slide-number">4</span>
+  <div class="slide-title" contenteditable="false">What I Will Change in Future Teaching</div>
+  <p class="slide-body" contenteditable="false">
+    <span class="rubric-tag content">ACTION</span>
+    <span class="rubric-tag visual">INTERACTION</span>
+    During our presentation design, I realized that a <strong>demo is not the same as a learning activity</strong>. A demo may simplify content, but students can still remain passive.
+  </p>
+  <div class="three-col">
+    <div class="action-card" contenteditable="false">
+      <h3>1. Start with ILOs</h3>
+      <p>Define what students should achieve before planning content or materials.</p>
+    </div>
+    <div class="action-card" contenteditable="false">
+      <h3>2. Align the design</h3>
+      <p>Choose activities and assessment methods that directly support the intended outcome.</p>
+    </div>
+    <div class="action-card" contenteditable="false">
+      <h3>3. Redesign interaction</h3>
+      <p>Use question-driven tasks, discussion, or online tools so students make judgments rather than only watch.</p>
+    </div>
+  </div>
+  <div class="quote-box" contenteditable="false">
+    <strong>Takeaway:</strong> The value of interaction is not that it makes class look active. It matters only when it genuinely pushes students to think and learn.
+  </div>
+  <div class="big-takeaway" contenteditable="false">
+    For me, the course changed teaching from a task of explaining content into a process of intentionally designing learning.
+  </div>
+  <div class="speaker-note">
+    The final lesson for me concerns interaction. In our presentation design, we used a simplified demo because many classmates might not have a coding background. That choice lowered the barrier, but after reflecting on it, I realized that demo does not equal learning activity. Watching is still mostly passive. In future teaching, I want to begin with ILOs, align activities and assessment, and design interaction that requires students to judge, discuss, or decide. For me, this course changed teaching from explaining content to intentionally designing learning.
+  </div>
+</div>
+
+<div class="notes-panel" id="notesPanel">
+  <div class="notes-title">SPEAKER NOTES</div>
+  <div class="notes-content" id="notesContent"></div>
+</div>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<script>
+let current = 0;
+let editMode = false;
+let toolbarVisible = false;
+let notesVisible = false;
+
+const cacheKey = 'reflection_slice_html_cache_v1';
+const cacheTsKey = 'reflection_slice_html_cache_ts_v1';
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+const progressBar = document.getElementById('progressBar');
+const slideInfo = document.getElementById('slideInfo');
+const toolbar = document.getElementById('toolbar');
+const editBtn = document.getElementById('editBtn');
+const notesBtn = document.getElementById('notesBtn');
+const saveIndicator = document.getElementById('saveIndicator');
+const notesContent = document.getElementById('notesContent');
+
+function updateNotes() {
+  const note = slides[current].querySelector('.speaker-note');
+  notesContent.textContent = note ? note.textContent.trim() : 'No notes for this slide.';
+}
+
+function showSlide(n) {
+  if (n < 0 || n >= total) return;
+  slides[current].classList.remove('active');
+  current = n;
+  slides[current].classList.add('active');
+  progressBar.style.width = ((current + 1) / total * 100) + '%';
+  slideInfo.textContent = (current + 1) + ' / ' + total;
+  updateNotes();
+}
+
+function toggleToolbar() {
+  toolbarVisible = !toolbarVisible;
+  toolbar.classList.toggle('visible', toolbarVisible);
+}
+
+function toggleEditMode() {
+  editMode = !editMode;
+  document.body.classList.toggle('edit-mode', editMode);
+  editBtn.classList.toggle('active', editMode);
+  document.querySelectorAll('[contenteditable]').forEach((el) => {
+    el.contentEditable = editMode ? 'true' : 'false';
+  });
+}
+
+function toggleNotes() {
+  notesVisible = !notesVisible;
+  document.body.classList.toggle('show-notes', notesVisible);
+  notesBtn.classList.toggle('active', notesVisible);
+  updateNotes();
+}
+
+function showSaveIndicator(message) {
+  saveIndicator.textContent = message;
+  saveIndicator.classList.add('show');
+  setTimeout(() => saveIndicator.classList.remove('show'), 1800);
+}
+
+function saveToCache() {
+  try {
+    localStorage.setItem(cacheKey, document.documentElement.outerHTML);
+    localStorage.setItem(cacheTsKey, new Date().toISOString());
+    showSaveIndicator('Saved to cache');
+  } catch (error) {
+    showSaveIndicator('Save failed');
+  }
+}
+
+function loadFromCache() {
+  const saved = localStorage.getItem(cacheKey);
+  const timestamp = localStorage.getItem(cacheTsKey);
+  if (!saved) {
+    showSaveIndicator('No cache found');
+    return;
+  }
+  if (confirm('Load saved version from ' + (timestamp || 'cache') + '? Current edits will be lost.')) {
+    document.open();
+    document.write(saved);
+    document.close();
+  }
+}
+
+function clearCache() {
+  if (confirm('Clear cached slide data?')) {
+    localStorage.removeItem(cacheKey);
+    localStorage.removeItem(cacheTsKey);
+    showSaveIndicator('Cache cleared');
+  }
+}
+
+function downloadHTML() {
+  const content = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([content], { type: 'text/html' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'reflection_slice_edited_' + new Date().toISOString().slice(0, 10) + '.html';
+  link.click();
+  URL.revokeObjectURL(link.href);
+  showSaveIndicator('Downloaded');
+}
+
+document.addEventListener('keydown', (event) => {
+  if (editMode && event.key !== 'Escape' && event.key !== 'F5') return;
+
+  switch (event.key) {
+    case 'ArrowRight':
+    case ' ':
+      event.preventDefault();
+      showSlide(current + 1);
+      break;
+    case 'ArrowLeft':
+      event.preventDefault();
+      showSlide(current - 1);
+      break;
+    case 'Home':
+      event.preventDefault();
+      showSlide(0);
+      break;
+    case 'End':
+      event.preventDefault();
+      showSlide(total - 1);
+      break;
+    case 'e':
+    case 'E':
+      event.preventDefault();
+      toggleEditMode();
+      break;
+    case 't':
+    case 'T':
+      event.preventDefault();
+      toggleToolbar();
+      break;
+    case 'n':
+    case 'N':
+      event.preventDefault();
+      toggleNotes();
+      break;
+    case 'Escape':
+      if (editMode) toggleEditMode();
+      break;
+  }
+});
+
+document.addEventListener('click', (event) => {
+  if (editMode) return;
+  if (event.target.closest('.toolbar') || event.target.closest('button')) return;
+  if (notesVisible && event.target.closest('.notes-panel')) return;
+
+  if (event.clientX > window.innerWidth * 0.6) showSlide(current + 1);
+  if (event.clientX < window.innerWidth * 0.4) showSlide(current - 1);
+});
+
+showSlide(0);
+</script>
+
+</body>
+</html>
